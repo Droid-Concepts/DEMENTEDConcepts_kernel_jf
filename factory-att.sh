@@ -17,14 +17,13 @@ echo "### AT&T KERNEL BUILD ###"
 echo "Setting compiler toolchain..."
 export CROSS_COMPILE=/home/*/kernel/linaro/bin/arm-eabi-
 
-
 time_start=$(date +%s.%N)
 
 echo "Remove old Package Files"
 rm -rf $PACKAGEDIR/* > /dev/null 2>&1
 rm -rf $PACKAGEDIR/system
 rm -rf $PACKAGEDIR/boot.img
-rm -rf $PACKAGEDIR/DEMENTEDKernel-JFATT-*
+rm -rf $PACKAGEDIR/DEMENTEDKernel-*
 
 echo "Setup Package Directory"
 mkdir -p $PACKAGEDIR/system/lib/modules

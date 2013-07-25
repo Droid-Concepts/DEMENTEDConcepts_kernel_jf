@@ -23,7 +23,7 @@ echo "Remove old Package Files"
 rm -rf $PACKAGEDIR/* > /dev/null 2>&1
 rm -rf $PACKAGEDIR/system
 rm -rf $PACKAGEDIR/boot.img
-rm -rf $PACKAGEDIR/DEMENTEDKernel-JFVZW-*
+rm -rf $PACKAGEDIR/DEMENTEDKernel-*
 
 echo "Setup Package Directory"
 mkdir -p $PACKAGEDIR/system/lib/modules
