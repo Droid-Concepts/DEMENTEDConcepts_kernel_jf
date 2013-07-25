@@ -6,6 +6,8 @@ export INITRAMFS_SOURCE=`readlink -f ..`/jf/Ramdisks/AOSP_ATT
 export CONFIG_AOSP_BUILD=y
 export PACKAGEDIR=$KERNELDIR/Packages/AOSP
 export FACTORY=$KERNELDIR/Packages
+# Path to Kernel Factory Out folder
+kout=~/kernel/out/JFATT
 # enable ccache
 export USE_CCACHE=1
 #Enable FIPS mode
