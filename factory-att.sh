@@ -12,7 +12,7 @@ export USE_SEC_FIPS_MODE=true
 export ARCH=arm
 echo "### AT&T KERNEL BUILD ###"
 echo "Setting compiler toolchain..."
-export CROSS_COMPILE=/home/forrest/kernel/android-toolchain-eabi/bin/arm-eabi-
+export CROSS_COMPILE=/home/*/kernel/linaro/bin/arm-eabi-
 
 
 time_start=$(date +%s.%N)
