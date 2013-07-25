@@ -49,8 +49,8 @@ echo "Make the kernel"
 make VARIANT_DEFCONFIG=jf_att_defconfig SELINUX_DEFCONFIG=jfselinux_defconfig SELINUX_LOG_DEFCONFIG=jfselinux_log_defconfig DEMENTED_jf_defconfig
 
 HOST_CHECK=`uname -n`
-if [ $HOST_CHECK = 'ktoonsez-VirtualBox' ] || [ $HOST_CHECK = 'task650-Underwear' ]; then
-	echo "Ktoonsez/task650 24!"
+if [ $HOST_CHECK = 'cphelps76-HP-Pavilion-dv7' ] || [ $HOST_CHECK = 'davros' ]; then
+	echo "DEMENTED / Droid Concepts"
 	make -j24
 else
 	echo "Others! - " + $HOST_CHECK

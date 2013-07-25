@@ -5,6 +5,7 @@ export INITRAMFS_DEST=$KERNELDIR/kernel/usr/initramfs
 export INITRAMFS_SOURCE=`readlink -f ..`/jf/Ramdisks/AOSP_VZW
 export CONFIG_AOSP_BUILD=y
 export PACKAGEDIR=$KERNELDIR/Packages/AOSP
+export FACTORY=$KERNELDIR/Packages
 # enable ccache
 export USE_CCACHE=1
 #Enable FIPS mode
@@ -48,7 +49,7 @@ echo "Make the kernel"
 make VARIANT_DEFCONFIG=jf_vzw_defconfig SELINUX_DEFCONFIG=jfselinux_defconfig SELINUX_LOG_DEFCONFIG=jfselinux_log_defconfig DEMENTED_jf_defconfig
 
 HOST_CHECK=`uname -n`
-if [ $HOST_CHECK = 'cphelps76' ] || [ $HOST_CHECK = 'davros' ]; then
+if [ $HOST_CHECK = 'cphelps76-HP-Pavilion-dv7' ] || [ $HOST_CHECK = 'davros' ]; then
 	echo "DEMENTED / Droid Concepts"
 	make -j24
 else
@@ -77,7 +78,7 @@ if [ -e $KERNELDIR/arch/arm/boot/zImage ]; then
 	rm ramdisk.gz
 	rm zImage
 	zip -r ../DEMENTEDKernel-JFVZW-$curdate.zip .
-        cp $PACKAGEDIR/DEMENTEDKernel-JFVZW-$curdate.zip $kout/DEMENTEDKernel-JFVZW-$curdate.zip
+        cp $FACTORY/DEMENTEDKernel-JFVZW-$curdate.zip $kout/DEMENTEDKernel-JFVZW-$curdate.zip
 	cd $KERNELDIR
 else
 	echo "KERNEL DID NOT BUILD! no zImage exist"

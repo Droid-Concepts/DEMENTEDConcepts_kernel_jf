@@ -48,7 +48,7 @@ echo "Make the kernel"
 make VARIANT_DEFCONFIG=jf_vzw_defconfig SELINUX_DEFCONFIG=jfselinux_defconfig SELINUX_LOG_DEFCONFIG=jfselinux_log_defconfig DEMENTED_jf_defconfig
 
 HOST_CHECK=`uname -n`
-if [ $HOST_CHECK = 'cphelps76' ] || [ $HOST_CHECK = 'davros' ]; then
+if [ $HOST_CHECK = 'cphelps76-HP-Pavilion-dv7' ] || [ $HOST_CHECK = 'davros' ]; then
 	echo "DEMENTED / Droid Concepts"
 	make -j24
 else
