@@ -19,6 +19,7 @@ ui_print("");
 ui_print("{x}...Extracting New Modules...");
 package_extract_dir("system", "/system");
 set_perm_recursive(0, 0, 0755, 0644, "/system/lib/modules");
+set_perm(0, 2000, 0755, "/system/etc/init.d/03dementedcpuclock");
 ui_print("");
 ui_print("{x}...Unmounting System...");
 unmount("/system");
