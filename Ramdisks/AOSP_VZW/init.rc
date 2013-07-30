@@ -25,14 +25,6 @@ on early-init
     # Create mountpoint so Dalvik can mark as slave in zygotes.
     mount tmpfs tmpfs /storage mode=0050,uid=0,gid=1028
 
-    # Allow system UID to setenforce and set booleans.
-    chown system system /selinux/enforce
-    chown system system /sys/fs/selinux/enforce
-    chown -R system system /selinux/booleans
-    chown -R system system /sys/fs/selinux/booleans
-    chown system system /selinux/commit_pending_bools
-    chown system system /sys/fs/selinux/commit_pending_bools
-
 on init
 
 sysclktz 0
@@ -49,7 +41,7 @@ loglevel 3
     export ANDROID_STORAGE /storage
     export ASEC_MOUNTPOINT /mnt/asec
     export LOOP_MOUNTPOINT /mnt/obb
-    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/okhttp.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar
+    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar
 
 # Backward compatibility
     symlink /system/etc /etc
@@ -218,13 +210,11 @@ on post-fs-data
     # create basic filesystem structure
     mkdir /data/misc 01771 system misc
     mkdir /data/misc/adb 02750 system shell
-    mkdir /data/misc/audit 02750 audit system
     mkdir /data/misc/bluedroid 0770 bluetooth net_bt_stack
     mkdir /data/misc/bluetooth 0770 system system
     mkdir /data/misc/keystore 0700 keystore keystore
     mkdir /data/misc/keychain 0771 system system
     mkdir /data/misc/sms 0770 system radio
-    mkdir /data/misc/zoneinfo 0775 system system
     mkdir /data/misc/vpn 0770 system vpn
     mkdir /data/misc/systemkeys 0700 system system
     # give system access to wpa_supplicant.conf for backup and restore
@@ -262,9 +252,6 @@ on post-fs-data
     # the following directory.
     mkdir /data/drm 0770 drm drm
 
-    # Separate location for storing security policy files on data
-    mkdir /data/security 0711 system system
-
     # If there is no fs-post-data action in the init.<device>.rc file, you
     # must uncomment this line, otherwise encrypted filesystems
     # won't work.
@@ -272,7 +259,7 @@ on post-fs-data
     #setprop vold.post_fs_data_done 1
 
 # Include extra init file
-    import /init.demented.rc
+    import /init.dc.rc
 
 on boot
     # interactive governor
@@ -293,8 +280,6 @@ on boot
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/input_boost
     chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
 
     # ondemand governor
     chown system system /sys/devices/system/cpu/cpufreq/ondemand/boostfreq
@@ -406,9 +391,6 @@ on boot
 # Set this property so surfaceflinger is not started by system_init
     setprop system_init.startsurfaceflinger 0
 
-# Run sysinit
-    exec /system/bin/sysinit
-
     class_start core
     class_start main
 
@@ -448,8 +430,6 @@ service ueventd /sbin/ueventd
 on property:selinux.reload_policy=1
     restart ueventd
     restart installd
-    chown -R system system /selinux/booleans
-    chown -R system system /sys/fs/selinux/booleans
 
 service console /system/bin/sh
     class core
@@ -457,9 +437,6 @@ service console /system/bin/sh
     disabled
     user shell
     group log
-
-service auditd /system/bin/auditd -k
-    class main
 
 on property:ro.debuggable=1
     start console
@@ -538,6 +515,12 @@ service bootanim /system/bin/bootanimation
     disabled
     oneshot
 
+service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
+     class late_start
+     user root
+     group shell
+     oneshot
+
 service installd /system/bin/installd
     class main
     socket installd stream 600 system system
@@ -580,4 +563,9 @@ service mdnsd /system/bin/mdnsd
     group inet net_raw
     socket mdnsd stream 0660 mdnsr inet
     disabled
+    oneshot
+
+service post-init /sbin/post-init.sh
+    class core
+    user root
     oneshot
